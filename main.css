@@ -1,0 +1,9 @@
+body {
+  background-color: red;
+}
+
+.container {
+  width: 300px;
+  margin: auto;
+  font-size: 3em;
+}
