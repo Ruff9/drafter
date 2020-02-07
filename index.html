@@ -7,9 +7,17 @@
   </head>
 
   <body>
-    <section class='container'>
-      <div class='text' contenteditable='true' spellcheck='false'></div>
-    </section>
+    <div id='wrapper'>
+      <section id='text-container'>
+        <div id='text' contenteditable='true' spellcheck='false'></div>
+
+        <div id='controls-container'>
+          <span id='clear-button' class='control-button'>Clear</span>
+        </div>
+      </section>
+
+      <section id='sidebar'></section>
+    </div>
 
     <script src='virginie.js'></script>
   </body>

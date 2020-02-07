@@ -7,17 +7,51 @@
     font-style: normal;
 }
 
-body {
-  background-color: #fafaed;
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+#wrapper {
+  display: flex;
+  height: 100vh;
   font-family: crimson_text;
 }
 
-.container {
+#text-container {
+  width: 80%;
   padding: 50px 100px;
   font-size: 1.7em;
+  background-color: #fafaed;
   color: darkslategray;
 }
 
-[contenteditable]:focus {
+#text {
+  height: 100%;
+}
+
+#text:focus {
     outline: 0px solid transparent;
+}
+
+#sidebar {
+  width: 20%;
+  background-color: darkslategray;
+}
+
+#controls-container {
+  position: fixed;
+  bottom: 20px;
+  right: calc(20% - 20px);
+}
+
+.control-button {
+  padding: 7px;
+  border-radius: 10px;
+  background-color: lightsteelblue;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.6em;
+  font-family: arial;
 }
