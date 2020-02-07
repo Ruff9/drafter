@@ -1,12 +1,12 @@
-var text = document.querySelector('.text');
+let text = document.querySelector('.text');
 
 window.addEventListener('load', () => {
     const gettingItem = window.localStorage.getItem('virginieContent');
 
-    if (gettingItem && gettingItem != "") {
+    if (gettingItem && gettingItem != '') {
         text.innerHTML = gettingItem;
     } else {
-        text.innerHTML = "<p>Écrire ici</p>"
+        text.innerHTML = 'Vous pouvez écrire ici :)'
     }
 });
 
