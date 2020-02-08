@@ -55,3 +55,14 @@ html, body {
   font-size: 0.6em;
   font-family: arial;
 }
+
+#save-button {
+  margin-left: 10px;
+}
+
+.thumbnail {
+  background-color: white;
+  margin: 15px;
+  padding: 5px;
+  cursor: pointer;
+}
