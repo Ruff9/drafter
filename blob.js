@@ -2,7 +2,7 @@ export class Blob {
   constructor(id, text) {
     this.id = id;
     this.text = text;
-    this.extract = text.substring(0,80);
+    this.extract = text.substring(0,150);
   }
 
   static save() {

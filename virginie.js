@@ -64,8 +64,9 @@ function renderSidebar() {
 
 function renderThumbnail(blob) {
   let newDiv = document.createElement('div');
+  let cleanExtract = blob.extract.replace(/<\/?[^>]+(>|$)/g, "");
 
-  newDiv.appendChild(document.createTextNode(blob.extract));
+  newDiv.appendChild(document.createTextNode(cleanExtract));
   newDiv.setAttribute('data-blob-id', blob.id);
   newDiv.classList.add('thumbnail');
 
