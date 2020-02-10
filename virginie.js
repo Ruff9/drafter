@@ -81,7 +81,7 @@ function setupThumbnailsEvents() {
 
   for (const thumb of thumbs) {
     thumb.onclick = function(e) {
-      let draft = Draft.find(e.target.parentNode.dataset.draftUid);
+      let draft = Draft.find(e.currentTarget.parentNode.dataset.draftUid);
 
       draft.load();
       renderCurrentContent();
@@ -90,7 +90,7 @@ function setupThumbnailsEvents() {
 
   for (const button of deleteButtons) {
     button.onclick = function(e) {
-      let draft = Draft.find(e.target.parentNode.dataset.draftUid);
+      let draft = Draft.find(e.currentTarget.parentNode.dataset.draftUid);
 
       draft.destroy();
       renderSidebar();

@@ -20,9 +20,7 @@ export class Draft {
   static find(uid) {
     const drafts = JSON.parse(Draft.saved());
 
-    const draftData = drafts.filter(obj => {
-      return obj.uid == uid
-    })[0]
+    let draftData = drafts.find(({uid}) => uid === uid )
 
     let draft = new Draft(draftData.text);
     draft.uid = draftData.uid;
