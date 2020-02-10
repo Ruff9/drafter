@@ -4,7 +4,7 @@ let text = document.querySelector('#text');
 let sidebar = document.querySelector('#sidebar');
 
 let clearButton = document.querySelector('#clear-button');
-let saveButton = document.querySelector('#save-button');
+let newDraftButton = document.querySelector('#new-draft-button');
 
 window.addEventListener('load', () => {
   renderCurrentContent();
@@ -20,7 +20,7 @@ clearButton.onclick = function() {
   window.localStorage.removeItem('virginieCurrent');
 };
 
-saveButton.onclick = function() {
+newDraftButton.onclick = function() {
   Draft.save();
   renderSidebar();
 };
@@ -47,7 +47,7 @@ function renderSidebar() {
     }
   }
 
-  setupThumbnails();
+  setupThumbnailsEvents();
 }
 
 function renderThumbnail(draft) {
@@ -62,19 +62,23 @@ function renderThumbnail(draft) {
   thumbContent.classList.add('thumbnail-content');
   newDiv.appendChild(thumbContent);
 
+  renderThumbnailDelete(newDiv)
+
+  sidebar.append(newDiv);
+}
+
+function renderThumbnailDelete(container) {
   let deleteContainer = document.createElement('div');
   deleteContainer.classList.add('delete-container');
-  newDiv.appendChild(deleteContainer);
+  container.appendChild(deleteContainer);
 
   let img = document.createElement('img');
   img.src = 'icons/close.svg';
   img.classList.add('delete-icon');
   deleteContainer.appendChild(img);
-
-  sidebar.append(newDiv);
 }
 
-function setupThumbnails() {
+function setupThumbnailsEvents() {
   let thumbs = document.getElementsByClassName('thumbnail-content');
   let deleteButtons = document.getElementsByClassName('delete-container');
 
