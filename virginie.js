@@ -1,4 +1,4 @@
-import { Blob } from './blob.js'
+import { Draft } from './draft.js'
 
 let text = document.querySelector('#text');
 let sidebar = document.querySelector('#sidebar');
@@ -21,7 +21,7 @@ clearButton.onclick = function() {
 };
 
 saveButton.onclick = function() {
-  Blob.save();
+  Draft.save();
   renderSidebar();
 };
 
@@ -40,22 +40,22 @@ function renderSidebar() {
   const savedContent = window.localStorage.getItem('virginieSaved');
 
   if (savedContent && savedContent != '') {
-    let blobs = JSON.parse(savedContent);
+    let drafts = JSON.parse(savedContent);
 
-    for (const blob of blobs) {
-      renderThumbnail(blob);
+    for (const draft of drafts) {
+      renderThumbnail(draft);
     }
   }
 
   setupThumbnails();
 }
 
-function renderThumbnail(blob) {
+function renderThumbnail(draft) {
   let newDiv = document.createElement('div');
-  let cleanExtract = blob.extract.replace(/<\/?[^>]+(>|$)/g, "");
+  let cleanExtract = draft.extract.replace(/<\/?[^>]+(>|$)/g, "");
 
   newDiv.classList.add('thumbnail');
-  newDiv.setAttribute('data-blob-id', blob.id);
+  newDiv.setAttribute('data-draft-uid', draft.uid);
 
   let thumbContent = document.createElement('div');
   thumbContent.appendChild(document.createTextNode(cleanExtract));
@@ -80,18 +80,18 @@ function setupThumbnails() {
 
   for (const thumb of thumbs) {
     thumb.onclick = function(e) {
-      let blob = Blob.find(e.target.parentNode.dataset.blobId);
+      let draft = Draft.find(e.target.parentNode.dataset.draftUid);
 
-      blob.load();
+      draft.load();
       renderCurrentContent();
     }
   }
 
   for (const button of deleteButtons) {
     button.onclick = function(e) {
-      let blob = Blob.find(e.target.parentNode.dataset.blobId);
+      let draft = Draft.find(e.target.parentNode.dataset.draftUid);
 
-      blob.destroy();
+      draft.destroy();
       renderSidebar();
     }
   }
