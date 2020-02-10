@@ -32,12 +32,13 @@ html, body {
 }
 
 #text:focus {
-    outline: 0px solid transparent;
+  outline: 0px solid transparent;
 }
 
 #sidebar {
   width: 20%;
   background-color: darkslategray;
+  overflow-y: auto;
 }
 
 #controls-container {
@@ -55,6 +56,7 @@ html, body {
   font-weight: bold;
   font-size: 0.6em;
   font-family: arial;
+  margin-left: 10px;
 }
 
 #save-button {

@@ -5,22 +5,20 @@ export class Draft {
     this.uid = Math.random().toString(36).substr(2, 9);
   }
 
+  static saved() {
+    return window.localStorage.getItem('virginieSaved');
+  }
+
   static save() {
-    const savedContent = window.localStorage.getItem('virginieSaved');
-    let parsedItems = []
+    const drafts = JSON.parse(Draft.saved());
 
-    if (savedContent && savedContent != '') {
-      parsedItems = JSON.parse(savedContent);
-    }
+    drafts.push(new Draft(text.innerHTML))
 
-    parsedItems.push(new Draft(text.innerHTML))
-
-    window.localStorage.setItem('virginieSaved', JSON.stringify(parsedItems));
+    window.localStorage.setItem('virginieSaved', JSON.stringify(drafts));
   }
 
   static find(uid) {
-    const savedContent = window.localStorage.getItem('virginieSaved');
-    const drafts = JSON.parse(savedContent);
+    const drafts = JSON.parse(Draft.saved());
 
     const draftData = drafts.filter(obj => {
       return obj.uid == uid
@@ -38,8 +36,7 @@ export class Draft {
   }
 
   destroy() {
-    const savedContent = window.localStorage.getItem('virginieSaved');
-    let drafts = JSON.parse(savedContent);
+    let drafts = JSON.parse(Draft.saved());
 
     drafts = drafts.filter(item => item.uid !== this.uid)
 

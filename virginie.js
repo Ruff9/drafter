@@ -37,14 +37,11 @@ function renderCurrentContent() {
 
 function renderSidebar() {
   sidebar.innerHTML = '';
-  const savedContent = window.localStorage.getItem('virginieSaved');
 
-  if (savedContent && savedContent != '') {
-    let drafts = JSON.parse(savedContent);
+  let drafts = JSON.parse(Draft.saved());
 
-    for (const draft of drafts) {
-      renderThumbnail(draft);
-    }
+  for (const draft of drafts) {
+    renderThumbnail(draft);
   }
 
   setupThumbnailsEvents();
