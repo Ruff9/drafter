@@ -63,6 +63,24 @@ html, body {
 .thumbnail {
   background-color: white;
   margin: 15px;
-  padding: 5px;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.thumbnail-content {
+  padding: 5px;
+  width: 100%;
+}
+
+.delete-container {
+  min-width: 25px;
+  background-color: lightsteelblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-icon {
+  width: 12px;
 }

@@ -6,7 +6,7 @@
   "description": "Notebook for new tab page",
 
   "icons": {
-    "48": "icons/border-48.png"
+    "48": "icons/feather.svg"
   },
 
   "chrome_url_overrides": {

@@ -32,4 +32,13 @@ export class Blob {
   load() {
     window.localStorage.setItem('virginieCurrent', this.text);
   }
+
+  destroy() {
+    const savedContent = window.localStorage.getItem('virginieSaved');
+    let blobs = JSON.parse(savedContent);
+
+    blobs = blobs.filter(item => item.id !== this.id)
+
+    window.localStorage.setItem('virginieSaved', JSON.stringify(blobs));
+  }
 }
