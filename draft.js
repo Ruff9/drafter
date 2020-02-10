@@ -6,7 +6,9 @@ export class Draft {
   }
 
   static saved() {
-    return window.localStorage.getItem('virginieSaved');
+    let data = window.localStorage.getItem('virginieSaved');
+
+    return (data && data != '') ? data : '[]'
   }
 
   static save() {
@@ -20,11 +22,11 @@ export class Draft {
   static find(uid) {
     const drafts = JSON.parse(Draft.saved());
 
-    let draftData = drafts.find(({uid}) => uid === uid )
+    let draftData = drafts.find(draft => draft.uid === uid )
 
     let draft = new Draft(draftData.text);
     draft.uid = draftData.uid;
-    // draft.extract = draftData.extract;
+    draft.extract = draftData.extract;
 
     return draft;
   }
