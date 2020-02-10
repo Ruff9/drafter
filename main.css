@@ -24,6 +24,7 @@ html, body {
   font-size: 1.7em;
   background-color: #fafaed;
   color: darkslategray;
+  overflow-y: auto;
 }
 
 #text {
