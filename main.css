@@ -1,3 +1,12 @@
+:root {
+  --text-bg: #fafaed;
+  --sidebar-bg: darkslategray;
+  --text-typo: darkslategray;
+  --button-typo: #5e5d5c;
+  --button-bg: lightsteelblue;
+  --thumb-typo: black;
+}
+
 @font-face {
     font-family: 'crimson_text';
     src: url('fonts/crimsontext-roman.woff2') format('woff2'),
@@ -16,14 +25,14 @@ html, body {
   display: flex;
   height: 100vh;
   font-family: crimson_text;
+  color: var(--text-typo);
 }
 
 #text-container {
   width: 80%;
   padding: 50px 100px;
   font-size: 1.7em;
-  background-color: #fafaed;
-  color: darkslategray;
+  background-color: var(--text-bg);
   overflow-y: auto;
 }
 
@@ -37,7 +46,7 @@ html, body {
 
 #sidebar {
   width: 20%;
-  background-color: darkslategray;
+  background-color: var(--sidebar-bg);
   overflow-y: auto;
 }
 
@@ -50,7 +59,8 @@ html, body {
 .control-button {
   padding: 7px;
   border-radius: 10px;
-  background-color: lightsteelblue;
+  background-color: var(--button-bg);
+  color: var(--button-typo);
   text-transform: uppercase;
   cursor: pointer;
   font-weight: bold;
@@ -65,7 +75,8 @@ html, body {
 }
 
 .thumbnail {
-  background-color: white;
+  background-color: var(--text-bg);
+  color: var(--thumb-typo);
   margin: 15px;
   cursor: pointer;
   display: flex;
@@ -80,7 +91,7 @@ html, body {
 
 .delete-container {
   min-width: 25px;
-  background-color: lightsteelblue;
+  background-color: var(--button-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,7 +109,8 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fafaed;
+  background-color: var(--button-bg);
+  color: var(--button-typo);
 }
 
 #active-draft-container {
@@ -107,5 +119,5 @@ html, body {
   right: 20%;
   font-size: 1.8em;
   font-family: arial;
-  color: lightsteelblue;
+  color: var(--button-bg);
 }
