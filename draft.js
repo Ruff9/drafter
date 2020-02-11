@@ -3,31 +3,39 @@ export class Draft {
     this.text = text;
     this.extract = text.substring(0,150);
     this.uid = Math.random().toString(36).substr(2, 9);
-    this.position = JSON.parse(Draft.saved()).length + 1
+    this.position = Draft.getAll().length + 1
   }
 
-  static saved() {
-    let data = window.localStorage.getItem('virginieSaved');
+  static getAll() {
+    let allDrafts = [];
 
-    return (data && data != '') ? data : '[]'
+    let keys = Object.keys(localStorage).filter(
+      key => key.startsWith('virginie-draft')
+    );
+
+    for (let key of keys) {
+      let draft = JSON.parse(window.localStorage.getItem(key));
+      allDrafts.push(draft)
+    }
+
+    return allDrafts.sort(function (a, b) { return a.position - b.position; });
   }
 
   static new(content) {
-    const drafts = JSON.parse(Draft.saved());
+    let draft = new Draft(content);
 
-    drafts.push(new Draft(content))
-
-    window.localStorage.setItem('virginieSaved', JSON.stringify(drafts));
+    window.localStorage.setItem(
+      'virginie-draft-' + draft.uid, JSON.stringify(draft)
+    );
   }
 
   static find(uid) {
-    const drafts = JSON.parse(Draft.saved());
+    let data = JSON.parse(window.localStorage.getItem('virginie-draft-' + uid));
+    let draft = new Draft(data.text);
 
-    let draftData = drafts.find(draft => draft.uid === uid )
-
-    let draft = new Draft(draftData.text);
-    draft.uid = draftData.uid;
-    draft.extract = draftData.extract;
+    draft.uid = data.uid;
+    draft.extract = data.extract;
+    draft.position = data.position;
 
     return draft;
   }
@@ -49,10 +57,6 @@ export class Draft {
   }
 
   destroy() {
-    let drafts = JSON.parse(Draft.saved());
-
-    drafts = drafts.filter(item => item.uid !== this.uid)
-
-    window.localStorage.setItem('virginieSaved', JSON.stringify(drafts));
+    window.localStorage.removeItem('virginie-draft-' + this.uid);
   }
 }

@@ -16,7 +16,7 @@ document.addEventListener('keyup', (event) => {
 });
 
 clearButton.onclick = function() {
-  text.innerHTML = '';
+  while (text.firstChild) text.removeChild(text.firstChild);
   Draft.destroyCurrent();
 };
 
@@ -36,9 +36,9 @@ function renderCurrentContent() {
 }
 
 function renderSidebar() {
-  sidebar.innerHTML = '';
+  while (sidebar.firstChild) sidebar.removeChild(sidebar.firstChild);
 
-  let drafts = JSON.parse(Draft.saved());
+  let drafts = Draft.getAll();
 
   for (const draft of drafts) {
     renderThumbnail(draft);
