@@ -87,3 +87,14 @@ html, body {
 .delete-icon {
   width: 12px;
 }
+
+.position-container {
+  font-size: 1.2em;
+  font-family: arial;
+  font-weight: bold;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fafaed;
+}

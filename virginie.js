@@ -53,15 +53,29 @@ function renderThumbnail(draft) {
 
   newDiv.classList.add('thumbnail');
   newDiv.setAttribute('data-draft-uid', draft.uid);
+  newDiv.setAttribute('data-draft-position', draft.position);
 
-  let thumbContent = document.createElement('div');
-  thumbContent.appendChild(document.createTextNode(cleanExtract));
-  thumbContent.classList.add('thumbnail-content');
-  newDiv.appendChild(thumbContent);
-
-  renderThumbnailDelete(newDiv)
+  renderThumbnailPosition(newDiv);
+  renderThumbnailContent(cleanExtract, newDiv);
+  renderThumbnailDelete(newDiv);
 
   sidebar.append(newDiv);
+}
+
+function renderThumbnailPosition(container) {
+  let position = container.dataset.draftPosition
+  let positionContainer = document.createElement('div');
+
+  positionContainer.appendChild(document.createTextNode(position));
+  positionContainer.classList.add('position-container');
+  container.appendChild(positionContainer);
+}
+
+function renderThumbnailContent(content, container) {
+  let thumbContent = document.createElement('div');
+  thumbContent.appendChild(document.createTextNode(content));
+  thumbContent.classList.add('thumbnail-content');
+  container.appendChild(thumbContent);
 }
 
 function renderThumbnailDelete(container) {

@@ -3,6 +3,7 @@ export class Draft {
     this.text = text;
     this.extract = text.substring(0,150);
     this.uid = Math.random().toString(36).substr(2, 9);
+    this.position = JSON.parse(Draft.saved()).length + 1
   }
 
   static saved() {
