@@ -12,10 +12,10 @@ export class Draft {
     return (data && data != '') ? data : '[]'
   }
 
-  static save() {
+  static new(content) {
     const drafts = JSON.parse(Draft.saved());
 
-    drafts.push(new Draft(text.innerHTML))
+    drafts.push(new Draft(content))
 
     window.localStorage.setItem('virginieSaved', JSON.stringify(drafts));
   }
@@ -30,6 +30,18 @@ export class Draft {
     draft.extract = draftData.extract;
 
     return draft;
+  }
+
+  static getCurrent() {
+    return window.localStorage.getItem('virginieCurrent');
+  }
+
+  static saveCurrent(content) {
+    window.localStorage.setItem('virginieCurrent', content);
+  }
+
+  static destroyCurrent() {
+    window.localStorage.removeItem('virginieCurrent');
   }
 
   load() {

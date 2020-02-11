@@ -12,21 +12,21 @@ window.addEventListener('load', () => {
 });
 
 document.addEventListener('keyup', (event) => {
-  window.localStorage.setItem('virginieCurrent', text.innerHTML);
+  Draft.saveCurrent(text.innerHTML);
 });
 
 clearButton.onclick = function() {
   text.innerHTML = '';
-  window.localStorage.removeItem('virginieCurrent');
+  Draft.destroyCurrent();
 };
 
 newDraftButton.onclick = function() {
-  Draft.save();
+  Draft.new(text.innerHTML);
   renderSidebar();
 };
 
 function renderCurrentContent() {
-  const currentContent = window.localStorage.getItem('virginieCurrent');
+  const currentContent = Draft.getCurrent();
 
   if (currentContent && currentContent != '') {
     text.innerHTML = currentContent;
