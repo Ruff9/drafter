@@ -6,12 +6,12 @@ export class Draft {
     this.position = Draft.count() + 1
   }
 
-  static getAll() {
+  static all() {
     let allDrafts = [];
 
     let uids = Object.keys(localStorage)
                      .filter(key => key.startsWith('virginie-draft'))
-                     .map( key => key.substring('virginie-draft-'.length));
+                     .map(key => key.substring('virginie-draft-'.length));
 
     for (let uid of uids) {
       let draft = Draft.find(uid);
@@ -21,9 +21,10 @@ export class Draft {
     return allDrafts.sort(function (a, b) { return a.position - b.position; });
   }
 
-  static new(content) {
-    let draft = new Draft(content);
+  static build(content) {
+    const draft = new Draft(content);
     draft.save();
+    draft.setActive();
   }
 
   static find(uid) {
@@ -44,7 +45,7 @@ export class Draft {
   }
 
   static adjustPositions() {
-    let drafts = Draft.getAll();
+    let drafts = Draft.all();
 
     for (let draft of drafts) {
       draft.position = drafts.indexOf(draft) + 1
@@ -56,12 +57,24 @@ export class Draft {
     return window.localStorage.getItem('virginie-current');
   }
 
+  static getActiveDraft() {
+    return window.localStorage.getItem('virginie-active-draft')
+  }
+
   static saveCurrent(content) {
+    let activeDraft = JSON.parse(Draft.getActiveDraft());
+
+    if (activeDraft && activeDraft != '') {
+      let draft = Draft.find(activeDraft.uid);
+      draft.update(content);
+    };
+
     window.localStorage.setItem('virginie-current', content);
   }
 
   static destroyCurrent() {
     window.localStorage.removeItem('virginie-current');
+    window.localStorage.removeItem('virginie-active-draft');
   }
 
   save() {
@@ -70,12 +83,24 @@ export class Draft {
     );
   }
 
+  update(content) {
+    this.text = content;
+    this.extract = content.substring(0,150);
+    this.save();
+  }
+
   load() {
     window.localStorage.setItem('virginie-current', this.text);
+    this.setActive();
   }
 
   destroy() {
     window.localStorage.removeItem('virginie-draft-' + this.uid);
     Draft.adjustPositions();
+  }
+
+  setActive() {
+    let active = { uid: this.uid, position: this.position };
+    window.localStorage.setItem('virginie-active-draft', JSON.stringify(active));
   }
 }

@@ -57,6 +57,7 @@ html, body {
   font-size: 0.6em;
   font-family: arial;
   margin-left: 10px;
+  user-select: none;
 }
 
 #save-button {
@@ -69,6 +70,7 @@ html, body {
   cursor: pointer;
   display: flex;
   justify-content: space-between;
+  user-select: none;
 }
 
 .thumbnail-content {
@@ -97,4 +99,13 @@ html, body {
   justify-content: center;
   align-items: center;
   background-color: #fafaed;
+}
+
+#active-draft-container {
+  position: fixed;
+  top: 20px;
+  right: 20%;
+  font-size: 1.8em;
+  font-family: arial;
+  color: lightsteelblue;
 }
