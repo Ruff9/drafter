@@ -2,31 +2,28 @@ export class Draft {
   constructor(text) {
     this.text = text;
     this.extract = text.substring(0,150);
-    this.uid = Math.random().toString(36).substr(2, 9);
-    this.position = Draft.getAll().length + 1
+    this.uid = Math.random().toString(36).substring(2, 9);
+    this.position = Draft.count() + 1
   }
 
   static getAll() {
     let allDrafts = [];
 
-    let keys = Object.keys(localStorage).filter(
-      key => key.startsWith('virginie-draft')
-    );
+    let uids = Object.keys(localStorage)
+                     .filter(key => key.startsWith('virginie-draft'))
+                     .map( key => key.substring('virginie-draft-'.length));
 
-    for (let key of keys) {
-      let draft = JSON.parse(window.localStorage.getItem(key));
-      allDrafts.push(draft)
-    }
+    for (let uid of uids) {
+      let draft = Draft.find(uid);
+      allDrafts.push(draft);
+    };
 
     return allDrafts.sort(function (a, b) { return a.position - b.position; });
   }
 
   static new(content) {
     let draft = new Draft(content);
-
-    window.localStorage.setItem(
-      'virginie-draft-' + draft.uid, JSON.stringify(draft)
-    );
+    draft.save();
   }
 
   static find(uid) {
@@ -40,23 +37,45 @@ export class Draft {
     return draft;
   }
 
+  static count() {
+    return Object.keys(localStorage)
+                 .filter(key => key.startsWith('virginie-draft'))
+                 .length;
+  }
+
+  static adjustPositions() {
+    let drafts = Draft.getAll();
+
+    for (let draft of drafts) {
+      draft.position = drafts.indexOf(draft) + 1
+      draft.save();
+    };
+  }
+
   static getCurrent() {
-    return window.localStorage.getItem('virginieCurrent');
+    return window.localStorage.getItem('virginie-current');
   }
 
   static saveCurrent(content) {
-    window.localStorage.setItem('virginieCurrent', content);
+    window.localStorage.setItem('virginie-current', content);
   }
 
   static destroyCurrent() {
-    window.localStorage.removeItem('virginieCurrent');
+    window.localStorage.removeItem('virginie-current');
+  }
+
+  save() {
+    window.localStorage.setItem(
+      'virginie-draft-' + this.uid, JSON.stringify(this)
+    );
   }
 
   load() {
-    window.localStorage.setItem('virginieCurrent', this.text);
+    window.localStorage.setItem('virginie-current', this.text);
   }
 
   destroy() {
     window.localStorage.removeItem('virginie-draft-' + this.uid);
+    Draft.adjustPositions();
   }
 }

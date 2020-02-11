@@ -40,9 +40,7 @@ function renderSidebar() {
 
   let drafts = Draft.getAll();
 
-  for (const draft of drafts) {
-    renderThumbnail(draft);
-  }
+  for (const draft of drafts) { renderThumbnail(draft); }
 
   setupThumbnailsEvents();
 }
