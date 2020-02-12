@@ -11,16 +11,18 @@
       <section id='text-container'>
         <div id='text' contenteditable='true' spellcheck='false'></div>
 
-        <div id='active-draft-container'></div>
-        <div id='controls-container'>
-          <span id='clear-button' class='control-button'>clear</span>
-          <span id='new-draft-button' class='control-button'>new draft</span>
+        <div class='controls-container'>
+          <div id='active-draft'></div>
+          <div class='controls'>
+            <span id='new-draft-button' class='control-button'>new draft</span>
+            <span id='clear-button' class='control-button'>clear</span>
+          </div>
         </div>
       </section>
 
       <section id='sidebar'></section>
     </div>
 
-    <script src='virginie.js' type='module'></script>
+    <script src='main.js' type='module'></script>
   </body>
 </html>

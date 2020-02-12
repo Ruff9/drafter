@@ -1,10 +1,11 @@
 :root {
   --text-bg: #fafaed;
-  --sidebar-bg: darkslategray;
-  --text-typo: darkslategray;
-  --button-typo: #5e5d5c;
-  --button-bg: lightsteelblue;
-  --thumb-typo: black;
+  --text-typo: #2f4f4f;
+  --sidebar-bg: #2f4f4f;
+  --thumb-bg: #fdfdf9;
+  --thumb-typo: #1c2f2f;
+  --button-bg: #b0c4de;
+  --active-typo: #9eb0c7;
 }
 
 @font-face {
@@ -31,13 +32,13 @@ html, body {
 #text-container {
   width: 80%;
   padding: 50px 100px;
-  font-size: 1.7em;
   background-color: var(--text-bg);
   overflow-y: auto;
 }
 
 #text {
   height: 100%;
+  font-size: 1.7em;
 }
 
 #text:focus {
@@ -49,10 +50,9 @@ html, body {
   background-color: var(--sidebar-bg);
   overflow-y: auto;
 }
-
-#controls-container {
+.controls-container {
   position: fixed;
-  bottom: 20px;
+  bottom: 25px;
   right: calc(20% - 20px);
 }
 
@@ -60,22 +60,25 @@ html, body {
   padding: 7px;
   border-radius: 10px;
   background-color: var(--button-bg);
-  color: var(--button-typo);
+  color: var(--text-typo);
   text-transform: uppercase;
   cursor: pointer;
   font-weight: bold;
-  font-size: 0.6em;
   font-family: arial;
   margin-left: 10px;
   user-select: none;
 }
 
-#save-button {
-  margin-left: 10px;
+#active-draft {
+  font-size: 1.5em;
+  font-family: arial;
+  color: var(--active-typo);
+  text-align: right;
+  margin-bottom: 15px;
 }
 
 .thumbnail {
-  background-color: var(--text-bg);
+  background-color: var(--thumb-bg);
   color: var(--thumb-typo);
   margin: 15px;
   cursor: pointer;
@@ -102,22 +105,12 @@ html, body {
 }
 
 .position-container {
-  font-size: 1.2em;
+  font-size: 1.4em;
   font-family: arial;
-  font-weight: bold;
   width: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--button-bg);
-  color: var(--button-typo);
-}
-
-#active-draft-container {
-  position: fixed;
-  top: 20px;
-  right: 20%;
-  font-size: 1.8em;
-  font-family: arial;
-  color: var(--button-bg);
+  color: var(--active-typo);
+  padding: 5px;
 }

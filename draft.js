@@ -7,14 +7,14 @@ export class Draft {
   }
 
   static all() {
-    let allDrafts = [];
+    const allDrafts = [];
 
-    let uids = Object.keys(localStorage)
+    const uids = Object.keys(localStorage)
                      .filter(key => key.startsWith('virginie-draft'))
                      .map(key => key.substring('virginie-draft-'.length));
 
-    for (let uid of uids) {
-      let draft = Draft.find(uid);
+    for (const uid of uids) {
+      const draft = Draft.find(uid);
       allDrafts.push(draft);
     };
 
@@ -28,8 +28,8 @@ export class Draft {
   }
 
   static find(uid) {
-    let data = JSON.parse(window.localStorage.getItem('virginie-draft-' + uid));
-    let draft = new Draft(data.text);
+    const data = JSON.parse(window.localStorage.getItem('virginie-draft-' + uid));
+    const draft = new Draft(data.text);
 
     draft.uid = data.uid;
     draft.extract = data.extract;
@@ -45,9 +45,9 @@ export class Draft {
   }
 
   static adjustPositions() {
-    let drafts = Draft.all();
+    const drafts = Draft.all();
 
-    for (let draft of drafts) {
+    for (const draft of drafts) {
       draft.position = drafts.indexOf(draft) + 1
       draft.save();
     };
@@ -62,10 +62,10 @@ export class Draft {
   }
 
   static saveCurrent(content) {
-    let activeDraft = JSON.parse(Draft.getActiveDraft());
+    const activeDraft = JSON.parse(Draft.getActiveDraft());
 
     if (activeDraft && activeDraft != '') {
-      let draft = Draft.find(activeDraft.uid);
+      const draft = Draft.find(activeDraft.uid);
       draft.update(content);
     };
 
@@ -100,7 +100,7 @@ export class Draft {
   }
 
   setActive() {
-    let active = { uid: this.uid, position: this.position };
+    const active = { uid: this.uid, position: this.position };
     window.localStorage.setItem('virginie-active-draft', JSON.stringify(active));
   }
 }

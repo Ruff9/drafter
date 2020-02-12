@@ -36,18 +36,18 @@ function renderCurrentContent() {
     text.innerHTML = 'Express yourself :)'
   };
 
-  renderActiveNumber();
+  renderActiveDraft();
 }
 
-function renderActiveNumber() {
+function renderActiveDraft() {
   const activeDraft = JSON.parse(Draft.getActiveDraft());
-  const container = document.querySelector('#active-draft-container');
+  const container = document.querySelector('#active-draft');
 
   while (container.firstChild) container.removeChild(container.firstChild);
 
   if (activeDraft && activeDraft != '') {
-    const position = activeDraft["position"]
-    container.appendChild(document.createTextNode(position));
+    const position = activeDraft['position']
+    container.appendChild(document.createTextNode('Draft #' + position));
   }
 }
 
@@ -77,8 +77,8 @@ function renderThumbnail(draft) {
 }
 
 function renderThumbnailPosition(container) {
-  let position = container.dataset.draftPosition
-  let positionContainer = document.createElement('div');
+  const position = container.dataset.draftPosition
+  const positionContainer = document.createElement('div');
 
   positionContainer.appendChild(document.createTextNode(position));
   positionContainer.classList.add('position-container');
@@ -111,7 +111,7 @@ function setupThumbnailsEvents() {
 
   for (const thumb of thumbs) {
     thumb.onclick = function(e) {
-      let draft = Draft.find(e.currentTarget.parentNode.dataset.draftUid);
+      const draft = Draft.find(e.currentTarget.parentNode.dataset.draftUid);
 
       draft.load();
       renderCurrentContent();
@@ -120,9 +120,10 @@ function setupThumbnailsEvents() {
 
   for (const button of deleteButtons) {
     button.onclick = function(e) {
-      let draft = Draft.find(e.currentTarget.parentNode.dataset.draftUid);
+      const draft = Draft.find(e.currentTarget.parentNode.dataset.draftUid);
 
       draft.destroy();
+      renderCurrentContent();
       renderSidebar();
     }
   }
