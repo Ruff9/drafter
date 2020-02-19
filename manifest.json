@@ -6,8 +6,13 @@
   "description": "Notebook for new tab page",
 
   "icons": {
-    "48": "icons/feather.svg"
+    "48": "icons/feather.svg",
+    "96": "icons/feather.svg"
   },
+
+  "permissions": [
+    "storage"
+  ],
 
   "chrome_url_overrides": {
     "newtab": "index.html"

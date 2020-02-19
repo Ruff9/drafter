@@ -3,49 +3,59 @@ export class Draft {
     this.text = text;
     this.extract = text.substring(0,150);
     this.uid = Math.random().toString(36).substring(2, 9);
-    this.position = Draft.count() + 1
   }
 
-  static all() {
-    const allDrafts = [];
+  static async init(text) {
+    const draft = new Draft(text);
+    draft.position = await Draft.count() + 1;
+    await draft.save();
+    return draft;
+  }
 
-    const uids = Object.keys(localStorage)
+  static async all() {
+    const allDrafts = [];
+    const all = await browser.storage.local.get();
+
+    const uids = Object.keys(all)
                      .filter(key => key.startsWith('virginie-draft'))
                      .map(key => key.substring('virginie-draft-'.length));
 
     for (const uid of uids) {
-      const draft = Draft.find(uid);
+      const draft = await Draft.find(uid);
       allDrafts.push(draft);
     };
 
     return allDrafts.sort(function (a, b) { return a.position - b.position; });
   }
 
-  static build(content) {
-    const draft = new Draft(content);
-    draft.save();
-    draft.setActive();
+  static async build(content) {
+    const draft = Draft.init(content);
+    await draft.setActive();
   }
 
-  static find(uid) {
-    const data = JSON.parse(window.localStorage.getItem('virginie-draft-' + uid));
-    const draft = new Draft(data.text);
+  static async find(uid) {
+    const draftKey = 'virginie-draft-' + uid;
+    const data = await browser.storage.local.get(draftKey);
 
-    draft.uid = data.uid;
-    draft.extract = data.extract;
-    draft.position = data.position;
+    const draft = new Draft(data[draftKey]['text']);
+
+    draft.uid = data[draftKey]['uid'];
+    draft.extract = data[draftKey]['extract'];
+    draft.position = data[draftKey]['position'];
 
     return draft;
   }
 
-  static count() {
-    return Object.keys(localStorage)
+  static async count() {
+    const all = await browser.storage.local.get();
+
+    return Object.keys(all)
                  .filter(key => key.startsWith('virginie-draft'))
                  .length;
   }
 
-  static adjustPositions() {
-    const drafts = Draft.all();
+  static async adjustPositions() {
+    const drafts = await Draft.all();
 
     for (const draft of drafts) {
       draft.position = drafts.indexOf(draft) + 1
@@ -53,54 +63,59 @@ export class Draft {
     };
   }
 
-  static getCurrent() {
-    return window.localStorage.getItem('virginie-current');
+  static async getCurrent() {
+    const current = await browser.storage.local.get('virginie-current');
+
+    return current['virginie-current'];
   }
 
-  static getActiveDraft() {
-    return window.localStorage.getItem('virginie-active-draft')
+  static async getActiveDraft() {
+    const result = await browser.storage.local.get('virginie-active-draft');
+
+    return result['virginie-active-draft']
   }
 
-  static saveCurrent(content) {
-    const activeDraft = JSON.parse(Draft.getActiveDraft());
+  static async saveCurrent(content) {
+    const activeDraft = await Draft.getActiveDraft();
 
     if (activeDraft && activeDraft != '') {
-      const draft = Draft.find(activeDraft.uid);
+      const draft = await Draft.find(activeDraft['uid']);
       draft.update(content);
     };
 
-    window.localStorage.setItem('virginie-current', content);
+    await browser.storage.local.set({ 'virginie-current': content });
   }
 
-  static destroyCurrent() {
-    window.localStorage.removeItem('virginie-current');
-    window.localStorage.removeItem('virginie-active-draft');
+  static async destroyCurrent() {
+    await browser.storage.local.remove('virginie-current');
+    await browser.storage.local.remove('virginie-active-draft');
   }
 
-  save() {
-    window.localStorage.setItem(
-      'virginie-draft-' + this.uid, JSON.stringify(this)
-    );
+  async save() {
+    const data = { [`virginie-draft-${this.uid}`]: this };
+    await browser.storage.local.set(data);
   }
 
-  update(content) {
+  async update(content) {
     this.text = content;
     this.extract = content.substring(0,150);
-    this.save();
+    await this.save();
   }
 
-  load() {
-    window.localStorage.setItem('virginie-current', this.text);
+  async load() {
+    await browser.storage.local.set({'virginie-current': this.text});
     this.setActive();
   }
 
-  destroy() {
-    window.localStorage.removeItem('virginie-draft-' + this.uid);
-    Draft.adjustPositions();
+  async destroy() {
+    await browser.storage.local.remove('virginie-draft-' + this.uid);
+    await Draft.adjustPositions();
   }
 
-  setActive() {
+  async setActive() {
     const active = { uid: this.uid, position: this.position };
-    window.localStorage.setItem('virginie-active-draft', JSON.stringify(active));
+    await browser.storage.local.set({'virginie-active-draft': active});
   }
 }
+
+// function onError(error) { console.log(error); }

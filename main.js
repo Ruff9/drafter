@@ -21,14 +21,16 @@ clearButton.onclick = function() {
   while (text.firstChild) text.removeChild(text.firstChild);
 };
 
-newDraftButton.onclick = function() {
-  Draft.build(text.innerHTML);
+newDraftButton.onclick = async function() {
+  const draft = await Draft.init(text.innerHTML);
+  draft.setActive();
+
   renderCurrentContent();
   renderSidebar();
 };
 
-function renderCurrentContent() {
-  const currentContent = Draft.getCurrent();
+async function renderCurrentContent() {
+  const currentContent = await Draft.getCurrent();
 
   if (currentContent && currentContent != '') {
     text.innerHTML = currentContent;
@@ -39,8 +41,8 @@ function renderCurrentContent() {
   renderActiveDraft();
 }
 
-function renderActiveDraft() {
-  const activeDraft = JSON.parse(Draft.getActiveDraft());
+async function renderActiveDraft() {
+  const activeDraft = await Draft.getActiveDraft();
   const container = document.querySelector('#active-draft');
 
   while (container.firstChild) container.removeChild(container.firstChild);
@@ -51,10 +53,10 @@ function renderActiveDraft() {
   }
 }
 
-function renderSidebar() {
+async function renderSidebar() {
   while (sidebar.firstChild) sidebar.removeChild(sidebar.firstChild);
 
-  const drafts = Draft.all();
+  const drafts = await Draft.all();
 
   for (const draft of drafts) { renderThumbnail(draft); }
 
@@ -105,24 +107,24 @@ function renderThumbnailDelete(container) {
   container.appendChild(deleteContainer);
 }
 
-function setupThumbnailsEvents() {
+async function setupThumbnailsEvents() {
   const thumbs = document.getElementsByClassName('thumbnail-content');
   const deleteButtons = document.getElementsByClassName('delete-container');
 
   for (const thumb of thumbs) {
-    thumb.onclick = function(e) {
-      const draft = Draft.find(e.currentTarget.parentNode.dataset.draftUid);
+    thumb.onclick = async function(e) {
+      const draft = await Draft.find(e.currentTarget.parentNode.dataset.draftUid);
 
-      draft.load();
+      await draft.load();
       renderCurrentContent();
     }
   }
 
   for (const button of deleteButtons) {
-    button.onclick = function(e) {
-      const draft = Draft.find(e.currentTarget.parentNode.dataset.draftUid);
+    button.onclick = async function(e) {
+      const draft = await Draft.find(e.currentTarget.parentNode.dataset.draftUid);
 
-      draft.destroy();
+      await draft.destroy();
       renderCurrentContent();
       renderSidebar();
     }
