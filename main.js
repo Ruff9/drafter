@@ -59,9 +59,24 @@ async function renderSidebar() {
 
   const drafts = await Draft.all();
 
-  for (const draft of drafts) { renderThumbnail(draft); }
+  if (drafts.length == 0) {
+    renderEmptySidebar();
+  } else {
+    for (const draft of drafts) { renderThumbnail(draft); }
+    setupThumbnailsEvents();
+  }
+}
 
-  setupThumbnailsEvents();
+function renderEmptySidebar() {
+  const container = document.createElement("div");
+  container.classList.add("empty-sidebar-container");
+
+  const newDiv = document.createElement("div");
+  newDiv.appendChild(document.createTextNode("No draft saved"));
+  newDiv.classList.add("empty-sidebar");
+
+  container.append(newDiv);
+  sidebar.append(container);
 }
 
 function renderThumbnail(draft) {

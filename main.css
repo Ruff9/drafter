@@ -32,7 +32,7 @@ html, body {
 
 #text-container {
   width: 80%;
-  padding: 50px 100px;
+  padding: 75px 100px;
   background-color: var(--text-bg);
   overflow-y: auto;
   overflow-wrap: break-word;
@@ -41,6 +41,8 @@ html, body {
 #text {
   height: 100%;
   font-size: 1.7em;
+  max-width: 800px;
+  margin: auto;
 }
 
 #text:focus {
@@ -129,4 +131,20 @@ html, body {
   align-items: center;
   color: var(--active-typo);
   padding: 5px;
+}
+
+.empty-sidebar-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty-sidebar {
+  font-family: arial;
+  text-transform: uppercase;
+  color: var(--text-typo);
+  font-weight: bold;
+  opacity: 0.4;
+  font-size: 1.4em;
 }
