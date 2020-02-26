@@ -49,8 +49,8 @@ async function renderActiveDraft() {
   while (container.firstChild) container.removeChild(container.firstChild);
 
   if (activeDraft && activeDraft != "") {
-    const position = activeDraft["position"];
-    container.appendChild(document.createTextNode("Draft #" + position));
+    const content = "Draft #" + activeDraft.position;
+    container.appendChild(document.createTextNode(content));
   }
 }
 
