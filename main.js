@@ -9,16 +9,16 @@ const newDraftButton = document.querySelector('#new-draft-button');
 window.addEventListener('load', () => {
   renderCurrentContent();
   renderSidebar();
+
+  document.addEventListener('keyup', (event) => {
+    Draft.saveCurrent(text.innerHTML);
+    updateThumbnail(text.innerHTML);
+  });
 });
 
-document.addEventListener('keyup', (event) => {
-  Draft.saveCurrent(text.innerHTML);
-  updateThumbnail(text.innerHTML);
-});
-
-clearButton.onclick = function() {
+clearButton.onclick = async function() {
   Draft.destroyCurrent();
-  renderCurrentContent();
+  await renderCurrentContent();
   while (text.firstChild) text.removeChild(text.firstChild);
 };
 
@@ -42,21 +42,8 @@ async function renderCurrentContent() {
   renderActiveDraft();
 }
 
-async function updateThumbnail(content) {
-  const activeDraft = await Draft.getActiveDraft();
-
-  if (activeDraft && activeDraft != '') {
-    const thumbContent = document.getElementsByClassName('thumbnail')
-                                 .item(activeDraft.position - 1)
-                                 .querySelector('.thumbnail-content');
-
-    while (thumbContent.firstChild) thumbContent.removeChild(thumbContent.firstChild);
-    thumbContent.innerHTML = sanitizeExtract(content.substring(0,150));
-  }
-}
-
 async function renderActiveDraft() {
-  const activeDraft = await Draft.getActiveDraft();
+  const activeDraft = await Draft.getActive();
   const container = document.querySelector('#active-draft');
 
   while (container.firstChild) container.removeChild(container.firstChild);
@@ -141,6 +128,22 @@ async function setupThumbnailsEvents() {
       await draft.destroy();
       renderCurrentContent();
       renderSidebar();
+    }
+  }
+}
+
+async function updateThumbnail(content) {
+  const cleanContent = sanitizeExtract(content.substring(0,150));
+  const activeDraft = await Draft.getActive();
+
+  if (activeDraft && activeDraft != '') {
+    const thumbs = await document.getElementsByClassName('thumbnail');
+    const thumb = thumbs.item(activeDraft.position - 1);
+    const thumbContent = thumb.querySelector('.thumbnail-content');
+
+    if (thumbContent.innerHTML != cleanContent) {
+      while (thumbContent.firstChild) thumbContent.removeChild(thumbContent.firstChild);
+      thumbContent.innerHTML = cleanContent;
     }
   }
 }

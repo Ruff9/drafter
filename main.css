@@ -34,6 +34,7 @@ html, body {
   padding: 50px 100px;
   background-color: var(--text-bg);
   overflow-y: auto;
+  overflow-wrap: break-word;
 }
 
 #text {
@@ -72,6 +73,7 @@ html, body {
 #active-draft {
   font-size: 1.5em;
   font-family: arial;
+  font-weight: bold;
   color: var(--active-typo);
   text-align: right;
   margin-bottom: 15px;
@@ -90,6 +92,8 @@ html, body {
 .thumbnail-content {
   padding: 5px;
   width: 100%;
+  max-width: calc(100% - 55px);
+  overflow-wrap: break-word;
 }
 
 .delete-container {
@@ -107,6 +111,7 @@ html, body {
 .position-container {
   font-size: 1.4em;
   font-family: arial;
+  font-weight: bold;
   width: 30px;
   display: flex;
   justify-content: center;

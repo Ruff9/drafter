@@ -69,14 +69,8 @@ export class Draft {
     return current['virginie-current'];
   }
 
-  static async getActiveDraft() {
-    const result = await browser.storage.local.get('virginie-active-draft');
-
-    return result['virginie-active-draft']
-  }
-
   static async saveCurrent(content) {
-    const activeDraft = await Draft.getActiveDraft();
+    const activeDraft = await Draft.getActive();
 
     if (activeDraft && activeDraft != '') {
       const draft = await Draft.find(activeDraft['uid']);
@@ -110,12 +104,22 @@ export class Draft {
   async destroy() {
     await browser.storage.local.remove('virginie-draft-' + this.uid);
     await Draft.adjustPositions();
+
+    const active = await Draft.getActive();
+    if (this.uid == active.uid) { await Draft.destroyActive(); }
+  }
+
+  static async getActive() {
+    const result = await browser.storage.local.get('virginie-active-draft');
+
+    return result['virginie-active-draft']
+  }
+
+  static async destroyActive() {
+    await browser.storage.local.remove('virginie-active-draft');
   }
 
   async setActive() {
-    const active = { uid: this.uid, position: this.position };
-    await browser.storage.local.set({'virginie-active-draft': active});
+    await browser.storage.local.set({'virginie-active-draft': this});
   }
 }
-
-// function onError(error) { console.log(error); }
