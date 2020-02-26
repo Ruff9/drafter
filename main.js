@@ -13,6 +13,7 @@ window.addEventListener('load', () => {
 
 document.addEventListener('keyup', (event) => {
   Draft.saveCurrent(text.innerHTML);
+  updateThumbnail(text.innerHTML);
 });
 
 clearButton.onclick = function() {
@@ -41,6 +42,19 @@ async function renderCurrentContent() {
   renderActiveDraft();
 }
 
+async function updateThumbnail(content) {
+  const activeDraft = await Draft.getActiveDraft();
+
+  if (activeDraft && activeDraft != '') {
+    const thumbContent = document.getElementsByClassName('thumbnail')
+                                 .item(activeDraft.position - 1)
+                                 .querySelector('.thumbnail-content');
+
+    while (thumbContent.firstChild) thumbContent.removeChild(thumbContent.firstChild);
+    thumbContent.innerHTML = sanitizeExtract(content.substring(0,150));
+  }
+}
+
 async function renderActiveDraft() {
   const activeDraft = await Draft.getActiveDraft();
   const container = document.querySelector('#active-draft');
@@ -65,7 +79,7 @@ async function renderSidebar() {
 
 function renderThumbnail(draft) {
   const newDiv = document.createElement('div');
-  const cleanExtract = draft.extract.replace(/<\/?[^>]+(>|$)/g, "");
+  const cleanExtract = sanitizeExtract(draft.extract);
 
   newDiv.classList.add('thumbnail');
   newDiv.setAttribute('data-draft-uid', draft.uid);
@@ -129,4 +143,8 @@ async function setupThumbnailsEvents() {
       renderSidebar();
     }
   }
+}
+
+function sanitizeExtract(content) {
+  return content.replace(/<\/?[^>]+(>|$)/g, "");
 }
