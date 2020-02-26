@@ -1,16 +1,16 @@
-import { Draft } from './draft.js';
+import { Draft } from "./draft.js";
 
-const text = document.querySelector('#text');
-const sidebar = document.querySelector('#sidebar');
+const text = document.querySelector("#text");
+const sidebar = document.querySelector("#sidebar");
 
-const clearButton = document.querySelector('#clear-button');
-const newDraftButton = document.querySelector('#new-draft-button');
+const clearButton = document.querySelector("#clear-button");
+const newDraftButton = document.querySelector("#new-draft-button");
 
-window.addEventListener('load', () => {
+window.addEventListener("load", function() {
   renderCurrentContent();
   renderSidebar();
 
-  document.addEventListener('keyup', (event) => {
+  document.addEventListener("keyup", function() {
     Draft.saveCurrent(text.innerHTML);
     updateThumbnail(text.innerHTML);
   });
@@ -33,24 +33,24 @@ newDraftButton.onclick = async function() {
 async function renderCurrentContent() {
   const currentContent = await Draft.getCurrent();
 
-  if (currentContent && currentContent != '') {
+  if (currentContent && currentContent != "") {
     text.innerHTML = currentContent;
   } else {
-    text.innerHTML = 'Express yourself :)'
-  };
+    text.innerHTML = "Express yourself :)";
+  }
 
   renderActiveDraft();
 }
 
 async function renderActiveDraft() {
   const activeDraft = await Draft.getActive();
-  const container = document.querySelector('#active-draft');
+  const container = document.querySelector("#active-draft");
 
   while (container.firstChild) container.removeChild(container.firstChild);
 
-  if (activeDraft && activeDraft != '') {
-    const position = activeDraft['position']
-    container.appendChild(document.createTextNode('Draft #' + position));
+  if (activeDraft && activeDraft != "") {
+    const position = activeDraft["position"];
+    container.appendChild(document.createTextNode("Draft #" + position));
   }
 }
 
@@ -65,12 +65,12 @@ async function renderSidebar() {
 }
 
 function renderThumbnail(draft) {
-  const newDiv = document.createElement('div');
+  const newDiv = document.createElement("div");
   const cleanExtract = sanitizeExtract(draft.extract);
 
-  newDiv.classList.add('thumbnail');
-  newDiv.setAttribute('data-draft-uid', draft.uid);
-  newDiv.setAttribute('data-draft-position', draft.position);
+  newDiv.classList.add("thumbnail");
+  newDiv.setAttribute("data-draft-uid", draft.uid);
+  newDiv.setAttribute("data-draft-position", draft.position);
 
   renderThumbnailPosition(newDiv);
   renderThumbnailContent(cleanExtract, newDiv);
@@ -80,37 +80,37 @@ function renderThumbnail(draft) {
 }
 
 function renderThumbnailPosition(container) {
-  const position = container.dataset.draftPosition
-  const positionContainer = document.createElement('div');
+  const position = container.dataset.draftPosition;
+  const positionContainer = document.createElement("div");
 
   positionContainer.appendChild(document.createTextNode(position));
-  positionContainer.classList.add('position-container');
+  positionContainer.classList.add("position-container");
   container.appendChild(positionContainer);
 }
 
 function renderThumbnailContent(content, container) {
-  const thumbContent = document.createElement('div');
+  const thumbContent = document.createElement("div");
   thumbContent.appendChild(document.createTextNode(content));
-  thumbContent.classList.add('thumbnail-content');
+  thumbContent.classList.add("thumbnail-content");
 
   container.appendChild(thumbContent);
 }
 
 function renderThumbnailDelete(container) {
-  const deleteContainer = document.createElement('div');
-  deleteContainer.classList.add('delete-container');
+  const deleteContainer = document.createElement("div");
+  deleteContainer.classList.add("delete-container");
 
-  const img = document.createElement('img');
-  img.src = 'icons/close.svg';
-  img.classList.add('delete-icon');
+  const img = document.createElement("img");
+  img.src = "icons/close.svg";
+  img.classList.add("delete-icon");
   deleteContainer.appendChild(img);
 
   container.appendChild(deleteContainer);
 }
 
 async function setupThumbnailsEvents() {
-  const thumbs = document.getElementsByClassName('thumbnail-content');
-  const deleteButtons = document.getElementsByClassName('delete-container');
+  const thumbs = document.getElementsByClassName("thumbnail-content");
+  const deleteButtons = document.getElementsByClassName("delete-container");
 
   for (const thumb of thumbs) {
     thumb.onclick = async function(e) {
@@ -118,7 +118,7 @@ async function setupThumbnailsEvents() {
 
       await draft.load();
       renderCurrentContent();
-    }
+    };
   }
 
   for (const button of deleteButtons) {
@@ -128,7 +128,7 @@ async function setupThumbnailsEvents() {
       await draft.destroy();
       renderCurrentContent();
       renderSidebar();
-    }
+    };
   }
 }
 
@@ -136,10 +136,10 @@ async function updateThumbnail(content) {
   const cleanContent = sanitizeExtract(content.substring(0,150));
   const activeDraft = await Draft.getActive();
 
-  if (activeDraft && activeDraft != '') {
-    const thumbs = await document.getElementsByClassName('thumbnail');
+  if (activeDraft && activeDraft != "") {
+    const thumbs = await document.getElementsByClassName("thumbnail");
     const thumb = thumbs.item(activeDraft.position - 1);
-    const thumbContent = thumb.querySelector('.thumbnail-content');
+    const thumbContent = thumb.querySelector(".thumbnail-content");
 
     if (thumbContent.innerHTML != cleanContent) {
       while (thumbContent.firstChild) thumbContent.removeChild(thumbContent.firstChild);
