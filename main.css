@@ -7,6 +7,7 @@
   --thumb-close-bg: #cfdbeb;
   --button-bg: #b0c4de;
   --active-typo: #9eb0c7;
+  --selection-bg: #e6dbd0;
 }
 
 @font-face {
@@ -21,6 +22,10 @@
 html, body {
   padding: 0;
   margin: 0;
+}
+
+::selection {
+  background: var(--selection-bg);
 }
 
 #wrapper {
@@ -41,7 +46,7 @@ html, body {
 #text {
   height: 100%;
   font-size: 1.7em;
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
 }
 
@@ -54,6 +59,7 @@ html, body {
   background-color: var(--sidebar-bg);
   overflow-y: auto;
 }
+
 .controls-container {
   position: fixed;
   bottom: 25px;
