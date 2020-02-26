@@ -16,10 +16,13 @@ export class Draft {
     const allDrafts = [];
     const all = await browser.storage.local.get();
 
-    for (const [key, value] of Object.entries(all)) {
-      if(key.startsWith("virginie-draft")) {
-        allDrafts.push(value);
-      }
+    const uids = Object.keys(all)
+                       .filter(key => key.startsWith("virginie-draft"))
+                       .map(key => key.substring("virginie-draft-".length));
+
+    for (const uid of uids) {
+      const draft = await Draft.find(uid);
+      allDrafts.push(draft);
     }
 
     return allDrafts.sort(function (a, b) { return a.position - b.position; });

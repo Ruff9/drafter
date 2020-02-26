@@ -1,9 +1,10 @@
 :root {
   --text-bg: #fafaed;
   --text-typo: #2f4f4f;
-  --sidebar-bg: #2f4f4f;
+  --sidebar-bg: #c1a68f;
   --thumb-bg: #fdfdf9;
   --thumb-typo: #1c2f2f;
+  --thumb-close-bg: #cfdbeb;
   --button-bg: #b0c4de;
   --active-typo: #9eb0c7;
 }
@@ -70,6 +71,10 @@ html, body {
   user-select: none;
 }
 
+.control-button:hover {
+  filter: brightness(90%);
+}
+
 #active-draft {
   font-size: 1.5em;
   font-family: arial;
@@ -97,22 +102,28 @@ html, body {
 }
 
 .delete-container {
-  min-width: 25px;
-  background-color: var(--button-bg);
+  min-width: 30px;
+  background-color: var(--thumb-close-bg);
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 1;
+}
+
+.delete-container:hover {
+  filter: brightness(90%);
 }
 
 .delete-icon {
-  width: 12px;
+  width: 16px;
+  opacity: 0.3;
 }
 
 .position-container {
-  font-size: 1.4em;
+  font-size: 1.7em;
   font-family: arial;
   font-weight: bold;
-  width: 30px;
+  width: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
