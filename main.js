@@ -36,11 +36,9 @@ newDraftButton.onclick = async function() {
 };
 
 async function renderCurrentContent() {
-  const savedContent = await Draft.getCurrent();
-  const content = savedContent ? savedContent : welcomeMessage;
+  const current = await Draft.getCurrent();
 
-  while (text.firstChild) text.removeChild(text.firstChild);
-  text.insertAdjacentHTML('afterbegin', content);
+  text.innerHTML = current ? current : welcomeMessage;
 
   renderActiveDraft();
 }
