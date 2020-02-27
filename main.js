@@ -166,9 +166,9 @@ async function updateThumbnail(content) {
 
 function sanitizeExtract(content) {
   return content.replace(/<\/?[^>]+(>|$)/g, "")
-                .replace("&nbsp;", " ");
+                .replace(/&nbsp;/gi, " ");
 }
 
 function eventTargetUid(event) {
-  return event.currentTarget.parentNode.dataset.draftUid
+  return event.currentTarget.parentNode.dataset.draftUid;
 }
