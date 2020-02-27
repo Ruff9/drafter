@@ -129,7 +129,7 @@ async function setupThumbnailsEvents() {
 
   for (const thumb of thumbs) {
     thumb.onclick = async function(e) {
-      const draft = await Draft.find(e.currentTarget.parentNode.dataset.draftUid);
+      const draft = await Draft.find(eventTargetUid(e));
 
       await draft.load();
       renderCurrentContent();
@@ -138,11 +138,12 @@ async function setupThumbnailsEvents() {
 
   for (const button of deleteButtons) {
     button.onclick = async function(e) {
-      const draft = await Draft.find(e.currentTarget.parentNode.dataset.draftUid);
+      const draft = await Draft.find(eventTargetUid(e));
 
       await draft.destroy();
       renderCurrentContent();
       renderSidebar();
+      renderActiveDraft();
     };
   }
 }
@@ -154,15 +155,20 @@ async function updateThumbnail(content) {
   if (activeDraft && activeDraft != "") {
     const thumbs = await document.getElementsByClassName("thumbnail");
     const thumb = thumbs.item(activeDraft.position - 1);
-    const thumbContent = thumb.querySelector(".thumbnail-content");
+    const container = thumb.querySelector(".thumbnail-content");
 
-    if (thumbContent.innerHTML != cleanContent) {
-      while (thumbContent.firstChild) thumbContent.removeChild(thumbContent.firstChild);
-      thumbContent.innerHTML = cleanContent;
+    if (container.innerHTML != cleanContent) {
+      while (container.firstChild) container.removeChild(container.firstChild);
+      container.innerHTML = cleanContent;
     }
   }
 }
 
 function sanitizeExtract(content) {
-  return content.replace(/<\/?[^>]+(>|$)/g, "");
+  return content.replace(/<\/?[^>]+(>|$)/g, "")
+                .replace("&nbsp;", " ");
+}
+
+function eventTargetUid(event) {
+  return event.currentTarget.parentNode.dataset.draftUid
 }

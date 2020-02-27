@@ -97,7 +97,7 @@ export class Draft {
 
   async destroy() {
     const active = await Draft.getActive();
-    if (this.uid == active.uid) { await Draft.destroyActive(); }
+    if (active && this.uid === active.uid) { await Draft.destroyActive(); }
 
     await browser.storage.local.remove("virginie-draft-" + this.uid);
     await Draft.adjustPositions();

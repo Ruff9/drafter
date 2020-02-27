@@ -103,6 +103,8 @@ html, body {
 }
 
 .thumbnail-content {
+  display: flex;
+  align-items: center;
   padding: 5px;
   width: 100%;
   max-width: calc(100% - 55px);
