@@ -6,6 +6,11 @@ const sidebar = document.querySelector("#sidebar");
 const clearButton = document.querySelector("#clear-button");
 const newDraftButton = document.querySelector("#new-draft-button");
 
+const welcomeMessage = `This page saves everything you type,<br>
+                        and allows to manage auto-saved drafts.<br><br>
+                        The data stays in your browser.<br><br>
+                        Enjoy :)`
+
 window.addEventListener("load", function() {
   renderCurrentContent();
   renderSidebar();
@@ -33,11 +38,7 @@ newDraftButton.onclick = async function() {
 async function renderCurrentContent() {
   const currentContent = await Draft.getCurrent();
 
-  if (currentContent && currentContent != "") {
-    text.innerHTML = currentContent;
-  } else {
-    text.innerHTML = "Express yourself :)";
-  }
+  text.innerHTML = currentContent ? currentContent : welcomeMessage;
 
   renderActiveDraft();
 }
@@ -153,7 +154,7 @@ async function updateThumbnail(content) {
   const activeDraft = await Draft.getActive();
 
   if (activeDraft && activeDraft != "") {
-    const thumbs = await document.getElementsByClassName("thumbnail");
+    const thumbs = document.getElementsByClassName("thumbnail");
     const thumb = thumbs.item(activeDraft.position - 1);
     const container = thumb.querySelector(".thumbnail-content");
 
