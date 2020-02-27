@@ -36,9 +36,11 @@ newDraftButton.onclick = async function() {
 };
 
 async function renderCurrentContent() {
-  const currentContent = await Draft.getCurrent();
+  const savedContent = await Draft.getCurrent();
+  const content = savedContent ? savedContent : welcomeMessage;
 
-  text.innerHTML = currentContent ? currentContent : welcomeMessage;
+  while (text.firstChild) text.removeChild(text.firstChild);
+  text.insertAdjacentHTML('afterbegin', content);
 
   renderActiveDraft();
 }
@@ -158,9 +160,9 @@ async function updateThumbnail(content) {
     const thumb = thumbs.item(activeDraft.position - 1);
     const container = thumb.querySelector(".thumbnail-content");
 
-    if (container.innerHTML != cleanContent) {
+    if (container.textContent != cleanContent) {
       while (container.firstChild) container.removeChild(container.firstChild);
-      container.innerHTML = cleanContent;
+      container.textContent = cleanContent;
     }
   }
 }
