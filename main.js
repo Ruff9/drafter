@@ -8,7 +8,7 @@ const newDraftButton = document.querySelector("#new-draft-button");
 
 const welcomeMessage = `This page saves everything you type,<br>
                         and allows to manage auto-saved drafts.<br><br>
-                        The data stays in your browser.<br>
+                        The data stays in your browser,<br>
                         no need for an account.<br><br>
                         Enjoy :)`
 
