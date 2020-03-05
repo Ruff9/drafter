@@ -17,8 +17,8 @@ export class Draft {
     const all = await browser.storage.local.get();
 
     const uids = Object.keys(all)
-                       .filter(key => key.startsWith("drafter"))
-                       .map(key => key.substring("drafter-".length));
+                       .filter(key => key.startsWith("drafter-draft"))
+                       .map(key => key.substring("drafter-draft-".length));
 
     for (const uid of uids) {
       const draft = await Draft.find(uid);
@@ -29,7 +29,7 @@ export class Draft {
   }
 
   static async find(uid) {
-    const draftKey = "drafter-" + uid;
+    const draftKey = "drafter-draft-" + uid;
     const data = await browser.storage.local.get(draftKey);
 
     const draft = new Draft(data[draftKey].text);
@@ -44,7 +44,7 @@ export class Draft {
     const all = await browser.storage.local.get();
 
     return Object.keys(all)
-                 .filter(key => key.startsWith("drafter"))
+                 .filter(key => key.startsWith("drafter-draft"))
                  .length;
   }
 
@@ -85,7 +85,7 @@ export class Draft {
   }
 
   async save() {
-    const data = { [`drafter-${this.uid}`]: this };
+    const data = { [`drafter-draft-${this.uid}`]: this };
     await browser.storage.local.set(data);
   }
 
@@ -104,7 +104,7 @@ export class Draft {
     const active = await Draft.getActive();
     if (active && this.uid === active.uid) { await Draft.destroyActive(); }
 
-    await browser.storage.local.remove("drafter-" + this.uid);
+    await browser.storage.local.remove("drafter-draft-" + this.uid);
     await Draft.adjustPositions();
   }
 
