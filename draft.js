@@ -17,8 +17,8 @@ export class Draft {
     const all = await browser.storage.local.get();
 
     const uids = Object.keys(all)
-                       .filter(key => key.startsWith("virginie-draft"))
-                       .map(key => key.substring("virginie-draft-".length));
+                       .filter(key => key.startsWith("drafter"))
+                       .map(key => key.substring("drafter-".length));
 
     for (const uid of uids) {
       const draft = await Draft.find(uid);
@@ -29,7 +29,7 @@ export class Draft {
   }
 
   static async find(uid) {
-    const draftKey = "virginie-draft-" + uid;
+    const draftKey = "drafter-" + uid;
     const data = await browser.storage.local.get(draftKey);
 
     const draft = new Draft(data[draftKey].text);
@@ -44,7 +44,7 @@ export class Draft {
     const all = await browser.storage.local.get();
 
     return Object.keys(all)
-                 .filter(key => key.startsWith("virginie-draft"))
+                 .filter(key => key.startsWith("drafter"))
                  .length;
   }
 
@@ -63,9 +63,9 @@ export class Draft {
   }
 
   static async getCurrent() {
-    const current = await browser.storage.local.get("virginie-current");
+    const current = await browser.storage.local.get("drafter-current");
 
-    return current["virginie-current"];
+    return current["drafter-current"];
   }
 
   static async saveCurrent(content) {
@@ -76,16 +76,16 @@ export class Draft {
       await draft.update(content);
     }
 
-    await browser.storage.local.set({ "virginie-current": content });
+    await browser.storage.local.set({ "drafter-current": content });
   }
 
   static async destroyCurrent() {
-    await browser.storage.local.remove("virginie-current");
+    await browser.storage.local.remove("drafter-current");
     await Draft.destroyActive();
   }
 
   async save() {
-    const data = { [`virginie-draft-${this.uid}`]: this };
+    const data = { [`drafter-${this.uid}`]: this };
     await browser.storage.local.set(data);
   }
 
@@ -96,7 +96,7 @@ export class Draft {
   }
 
   async load() {
-    await browser.storage.local.set({"virginie-current": this.text});
+    await browser.storage.local.set({"drafter-current": this.text});
     await this.setActive();
   }
 
@@ -104,14 +104,14 @@ export class Draft {
     const active = await Draft.getActive();
     if (active && this.uid === active.uid) { await Draft.destroyActive(); }
 
-    await browser.storage.local.remove("virginie-draft-" + this.uid);
+    await browser.storage.local.remove("drafter-" + this.uid);
     await Draft.adjustPositions();
   }
 
   static async getActive() {
-    const result = await browser.storage.local.get("virginie-active-draft");
+    const result = await browser.storage.local.get("drafter-active");
 
-    return result["virginie-active-draft"];
+    return result["drafter-active"];
   }
 
   static async updateActivePosition(position) {
@@ -119,14 +119,14 @@ export class Draft {
 
     draft.position = position;
 
-    await browser.storage.local.set({"virginie-active-draft": draft});
+    await browser.storage.local.set({"drafter-active": draft});
   }
 
   static async destroyActive() {
-    await browser.storage.local.remove("virginie-active-draft");
+    await browser.storage.local.remove("drafter-active");
   }
 
   async setActive() {
-    await browser.storage.local.set({"virginie-active-draft": this});
+    await browser.storage.local.set({"drafter-active": this});
   }
 }
