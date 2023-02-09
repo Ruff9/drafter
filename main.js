@@ -12,6 +12,9 @@ const welcomeMessage = `This page saves everything you type,<br>
                         no need for an account.<br><br>
                         Enjoy :)`
 
+setTheme();
+applyTheme();
+
 window.addEventListener("load", function() {
   renderCurrentContent();
   renderSidebar();
@@ -57,7 +60,8 @@ async function renderActiveDraft() {
 }
 
 async function renderSidebar() {
-  while (sidebar.firstChild) sidebar.removeChild(sidebar.firstChild);
+  const thumbnails = document.getElementsByClassName('thumbnail');
+  while (thumbnails[0]) thumbnails[0].parentNode.removeChild(thumbnails[0]);
 
   const drafts = await Draft.all();
 
@@ -82,6 +86,7 @@ function renderEmptySidebar() {
 }
 
 function renderThumbnail(draft) {
+  const container = document.querySelector(".thumbnails-container");
   const newDiv = document.createElement("div");
   const cleanExtract = sanitizeExtract(draft.extract);
 
@@ -93,7 +98,7 @@ function renderThumbnail(draft) {
   renderThumbnailContent(cleanExtract, newDiv);
   renderThumbnailDelete(newDiv);
 
-  sidebar.append(newDiv);
+  container.append(newDiv);
 }
 
 function renderThumbnailPosition(container) {
@@ -164,6 +169,48 @@ async function updateThumbnail(content) {
       container.textContent = cleanContent;
     }
   }
+}
+
+async function applyTheme() {
+  const pageBody = document.querySelector("body");
+  const currentTheme = await browser.storage.local.get("drafter-dark-theme");
+
+  switch(currentTheme["drafter-dark-theme"]) {
+    case "":
+      await saveThemeToLight();
+      pageBody.classList.remove("dark-mode");
+      break;
+    case true:
+      pageBody.classList.add("dark-mode");
+      break;
+    case false:
+      pageBody.classList.remove("dark-mode");
+      break;
+  }
+}
+
+async function setTheme() {
+  const checkbox = document.getElementById('selectDarkTheme')
+  const current = await browser.storage.local.get("drafter-dark-theme");
+  document.getElementById("selectDarkTheme").checked = current["drafter-dark-theme"];
+
+  checkbox.onclick = async function(e) {
+    if (e.currentTarget.checked) {
+      await saveThemeToDark();
+      await applyTheme();
+    } else {
+      await saveThemeToLight();
+      await applyTheme();
+    }
+  }
+}
+
+async function saveThemeToLight() {
+  await browser.storage.local.set({"drafter-dark-theme": false});
+}
+
+async function saveThemeToDark() {
+  await browser.storage.local.set({"drafter-dark-theme": true});
 }
 
 function sanitizeExtract(content) {

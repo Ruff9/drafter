@@ -8,6 +8,16 @@
   --button-bg: #b0c4de;
   --active-typo: #9eb0c7;
   --selection-bg: #e6dbd0;
+
+  --dark-text-bg: #2B2B2B;
+  --dark-text-typo: #fdfdf9;
+  --dark-sidebar-bg: #423F3E;
+  --dark-thumb-bg: #262626;
+  --dark-thumb-typo: #fdfdf9;
+  --dark-thumb-close-bg: #7d4f4f;
+  --dark-button-bg: #694242;
+  --dark-active-typo: #bd9696;
+  --dark-selection-bg: #72573c;
 }
 
 @font-face {
@@ -28,11 +38,19 @@ html, body {
   background: var(--selection-bg);
 }
 
+.dark-mode ::selection {
+  background: var(--dark-selection-bg);
+}
+
 #wrapper {
   display: flex;
   height: 100vh;
   font-family: crimson_text;
   color: var(--text-typo);
+}
+
+.dark-mode #wrapper {
+  color: var(--dark-text-typo);
 }
 
 #text-container {
@@ -41,6 +59,10 @@ html, body {
   background-color: var(--text-bg);
   overflow-y: auto;
   overflow-wrap: break-word;
+}
+
+.dark-mode #text-container {
+  background-color: var(--dark-text-bg);
 }
 
 #text {
@@ -58,6 +80,14 @@ html, body {
   width: 20%;
   background-color: var(--sidebar-bg);
   overflow-y: auto;
+
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+}
+
+.dark-mode #sidebar {
+  background-color: var(--dark-sidebar-bg);
 }
 
 .controls-container {
@@ -79,6 +109,11 @@ html, body {
   user-select: none;
 }
 
+.dark-mode .control-button {
+  background-color: var(--dark-button-bg);
+  color: var(--dark-text-typo);
+}
+
 .control-button:hover {
   filter: brightness(90%);
 }
@@ -92,6 +127,10 @@ html, body {
   margin-bottom: 15px;
 }
 
+.dark-mode #active-draft {
+  color: var(--dark-active-typo);
+}
+
 .thumbnail {
   background-color: var(--thumb-bg);
   color: var(--thumb-typo);
@@ -100,6 +139,11 @@ html, body {
   display: flex;
   justify-content: space-between;
   user-select: none;
+}
+
+.dark-mode .thumbnail {
+  background-color: var(--dark-thumb-bg);
+  color: var(--dark-thumb-typo);
 }
 
 .thumbnail-content {
@@ -118,6 +162,10 @@ html, body {
   align-items: center;
   justify-content: center;
   opacity: 1;
+}
+
+.dark-mode .delete-container {
+  background-color: var(--dark-thumb-close-bg);
 }
 
 .delete-container:hover {
@@ -141,6 +189,10 @@ html, body {
   padding: 5px;
 }
 
+.dark-mode .position-container {
+  color: var(--dark-active-typo);
+}
+
 .empty-sidebar-container {
   height: 100%;
   display: flex;
@@ -155,4 +207,91 @@ html, body {
   font-weight: bold;
   opacity: 0.4;
   font-size: 1.4em;
+}
+
+.dark-mode .empty-sidebar {
+  color: var(--dark-text-typo)
+}
+
+ /* checkbox, inspiration: https://blog.logrocket.com/how-to-style-forms-with-css-a-beginners-guide/ */
+
+.sidebar-controls {
+  display: flex;
+  margin-bottom: 19px;
+  padding-left: 20px; 
+}
+
+.checkbox-container {
+  display: flex;
+  width: fit-content;
+  margin: auto;
+  padding: 8px;
+  border-radius: 10px;
+
+  background-color: var(--thumb-bg);
+  color: var(--text-typo);
+
+  cursor: pointer;
+  font-weight: bold;
+  font-family: arial;
+  user-select: none;
+}
+
+.dark-mode .checkbox-container {
+  background-color: var(--dark-thumb-bg);
+  color: var(--dark-text-typo);
+}
+
+.checkbox-label {
+  position: relative;
+  padding-left:30px;
+  cursor: pointer;
+}
+
+/* hide default checkbox  */
+.checkbox-label input[type=checkbox] {
+  position: absolute;
+  border: none;
+  appearance: none;
+  width: 0;
+  height: 0;
+  margin: 0;
+}
+
+/* custom checkbox */
+.checkbox-label span {
+  position: absolute;
+  top:0;
+  left:0;
+  width:20px;
+  height:20px;
+  background-color: #ddd;
+  transition: .3s background-color;
+}
+
+.checkbox-label span:after {
+  content: "";
+  position: absolute;
+  display: none;
+
+  /* check icon */
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-label:hover span {
+  background-color: #ccc;
+}
+
+.checkbox-label input:checked ~ span {
+  background-color: var(--dark-active-typo);;
+}
+
+.checkbox-label input:checked ~ span:after {
+  display:block;
 }
