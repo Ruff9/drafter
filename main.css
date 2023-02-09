@@ -225,7 +225,7 @@ html, body {
   display: flex;
   width: fit-content;
   margin: auto;
-  padding: 8px;
+  padding: 7px;
   border-radius: 10px;
 
   background-color: var(--thumb-bg);
