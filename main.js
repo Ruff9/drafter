@@ -68,6 +68,7 @@ async function renderSidebar() {
   if (drafts.length == 0) {
     renderEmptySidebar();
   } else {
+    clearEmptySidebar();
     for (const draft of drafts) { renderThumbnail(draft); }
     setupThumbnailsEvents();
   }
@@ -83,6 +84,14 @@ function renderEmptySidebar() {
 
   container.append(newDiv);
   sidebar.prepend(container);
+}
+
+function clearEmptySidebar() {
+  const emptySidebar = document.querySelector(".empty-sidebar-container");
+
+  if(emptySidebar) {
+    emptySidebar.remove();
+  }
 }
 
 function renderThumbnail(draft) {
