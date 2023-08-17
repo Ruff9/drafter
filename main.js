@@ -82,7 +82,7 @@ function renderEmptySidebar() {
   newDiv.classList.add("empty-sidebar");
 
   container.append(newDiv);
-  sidebar.append(container);
+  sidebar.prepend(container);
 }
 
 function renderThumbnail(draft) {
