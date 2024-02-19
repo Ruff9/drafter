@@ -223,8 +223,11 @@ async function saveThemeToDark() {
 }
 
 function sanitizeExtract(content) {
-  return content.replace(/<\/?[^>]+(>|$)/g, "")
-                .replace(/&nbsp;/gi, " ");
+  return content.replace(/<\/div>/g, " ")
+                .replace(/<\/?[^>]+(>|$)/g, "")
+                .replace(/&nbsp;/gi, " ")
+                .replace(/&gt;/g, ">")
+                .replace(/&lt;/g, "<");
 }
 
 function eventTargetUid(event) {

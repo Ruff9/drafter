@@ -59,6 +59,7 @@ html, body {
   background-color: var(--text-bg);
   overflow-y: auto;
   overflow-wrap: break-word;
+  box-sizing: initial;
 }
 
 .dark-mode #text-container {
@@ -152,7 +153,7 @@ html, body {
   padding: 5px;
   width: 100%;
   max-width: calc(100% - 55px);
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 .delete-container {
