@@ -6,11 +6,13 @@ const sidebar = document.querySelector("#sidebar");
 const clearButton = document.querySelector("#clear-button");
 const newDraftButton = document.querySelector("#new-draft-button");
 
-const welcomeMessage = `This page saves everything you type,<br>
-                        and allows to manage auto-saved drafts.<br><br>
-                        The data stays in your browser,<br>
-                        no need for an account.<br><br>
-                        Enjoy :)`
+const welcomeMessage = `This page saves everything you type,
+and allows to manage auto-saved drafts.
+
+The data stays in your browser,
+no need for an account.
+
+Enjoy :)`
 
 setTheme();
 applyTheme();
@@ -20,19 +22,19 @@ window.addEventListener("load", function() {
   renderSidebar();
 
   document.addEventListener("keyup", function() {
-    Draft.saveCurrent(text.innerHTML);
-    updateThumbnail(text.innerHTML);
+    Draft.saveCurrent(text.value);
+    updateThumbnail(text.value);
   });
 });
 
 clearButton.onclick = async function() {
   Draft.destroyCurrent();
   await renderCurrentContent();
-  while (text.firstChild) text.removeChild(text.firstChild);
+  text.value = '';
 };
 
 newDraftButton.onclick = async function() {
-  const draft = await Draft.init(text.innerHTML);
+  const draft = await Draft.init(text.value);
   draft.setActive();
 
   renderCurrentContent();
@@ -42,7 +44,7 @@ newDraftButton.onclick = async function() {
 async function renderCurrentContent() {
   const current = await Draft.getCurrent();
 
-  text.innerHTML = current ? current : welcomeMessage;
+  text.value = current ? current : welcomeMessage;
 
   renderActiveDraft();
 }
@@ -97,14 +99,13 @@ function clearEmptySidebar() {
 function renderThumbnail(draft) {
   const container = document.querySelector(".thumbnails-container");
   const newDiv = document.createElement("div");
-  const cleanExtract = sanitizeExtract(draft.extract);
 
   newDiv.classList.add("thumbnail");
   newDiv.setAttribute("data-draft-uid", draft.uid);
   newDiv.setAttribute("data-draft-position", draft.position);
 
   renderThumbnailPosition(newDiv);
-  renderThumbnailContent(cleanExtract, newDiv);
+  renderThumbnailContent(draft.extract, newDiv);
   renderThumbnailDelete(newDiv);
 
   container.append(newDiv);
@@ -165,7 +166,7 @@ async function setupThumbnailsEvents() {
 }
 
 async function updateThumbnail(content) {
-  const cleanContent = sanitizeExtract(content.substring(0,150));
+  const shortenContent = content.substring(0,150);
   const activeDraft = await Draft.getActive();
 
   if (activeDraft && activeDraft != "") {
@@ -173,9 +174,9 @@ async function updateThumbnail(content) {
     const thumb = thumbs.item(activeDraft.position - 1);
     const container = thumb.querySelector(".thumbnail-content");
 
-    if (container.textContent != cleanContent) {
+    if (container.textContent != shortenContent) {
       while (container.firstChild) container.removeChild(container.firstChild);
-      container.textContent = cleanContent;
+      container.textContent = shortenContent;
     }
   }
 }
@@ -220,14 +221,6 @@ async function saveThemeToLight() {
 
 async function saveThemeToDark() {
   await browser.storage.local.set({"drafter-dark-theme": true});
-}
-
-function sanitizeExtract(content) {
-  return content.replace(/<\/div>/g, " ")
-                .replace(/<\/?[^>]+(>|$)/g, "")
-                .replace(/&nbsp;/gi, " ")
-                .replace(/&gt;/g, ">")
-                .replace(/&lt;/g, "<");
 }
 
 function eventTargetUid(event) {
