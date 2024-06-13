@@ -290,9 +290,9 @@ html, body {
   display: none;
 
   /* check icon */
-  left: 6px;
-  top: 2px;
-  width: 4px;
+  left: 7px;
+  top: 4px;
+  width: 5px;
   height: 10px;
   border: solid white;
   border-width: 0 3px 3px 0;
