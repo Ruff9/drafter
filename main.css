@@ -132,6 +132,12 @@ html, body {
   color: var(--dark-active-typo);
 }
 
+.thumbnails-container {
+  height: calc(100% - 64px);
+  position: fixed;
+  overflow: scroll;
+}
+
 .thumbnail {
   background-color: var(--thumb-bg);
   color: var(--thumb-typo);
@@ -216,10 +222,18 @@ html, body {
 
  /* checkbox, inspiration: https://blog.logrocket.com/how-to-style-forms-with-css-a-beginners-guide/ */
 
+
+.sidebar-controls-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-top: 12px;
+}
+
 .sidebar-controls {
   display: flex;
   margin-bottom: 19px;
-  padding-left: 20px; 
+  padding-left: 20px;
 }
 
 .checkbox-container {

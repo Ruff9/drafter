@@ -108,6 +108,7 @@ function renderThumbnail(draft) {
   renderThumbnailDelete(newDiv);
 
   container.append(newDiv);
+  newDiv.scrollIntoView(false);
 }
 
 function renderThumbnailPosition(container) {
